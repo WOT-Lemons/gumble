@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"time"
+	"fmt"
 
 	"github.com/TLMcNulty/gumble/gumble"
 	"github.com/timshannon/go-openal/openal"

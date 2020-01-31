@@ -153,12 +153,14 @@ func (s *Stream) sourceRoutine() {
 		case <-ticker.C:
 			buff := s.deviceSource.CaptureSamples(uint32(frameSize))
 			if len(buff) != frameSize*2 {
+				fmt.Printf("buffer is not double the framesize")
 				continue
 			}
 			int16Buffer := make([]int16, frameSize)
 			for i := range int16Buffer {
 				int16Buffer[i] = int16(binary.LittleEndian.Uint16(buff[i*2 : (i+1)*2]))
 			}
+			fmt.Printf(int16Buffer)
 			outgoing <- gumble.AudioBuffer(int16Buffer)
 		}
 	}

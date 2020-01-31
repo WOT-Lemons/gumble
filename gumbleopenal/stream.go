@@ -134,6 +134,7 @@ func (s *Stream) sourceRoutine() {
 	} else {
 		fmt.Printf("frameSize = sourceFrameSize\n")
 		fmt.Printf("Frame size: ", frameSize)
+		fmt.Printf("Interval: ", interval)
 	}
 
 	ticker := time.NewTicker(interval)

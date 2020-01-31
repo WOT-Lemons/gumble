@@ -160,7 +160,8 @@ func (s *Stream) sourceRoutine() {
 			for i := range int16Buffer {
 				int16Buffer[i] = int16(binary.LittleEndian.Uint16(buff[i*2 : (i+1)*2]))
 			}
-			fmt.Printf(int16Buffer)
+			s := strconv.Itoa(int16Buffer)
+			fmt.Printf(s)
 			outgoing <- gumble.AudioBuffer(int16Buffer)
 		}
 	}

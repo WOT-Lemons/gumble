@@ -133,8 +133,8 @@ func (s *Stream) sourceRoutine() {
 		s.deviceSource = openal.CaptureOpenDevice("", gumble.AudioSampleRate, openal.FormatMono16, uint32(s.sourceFrameSize))
 	} else {
 		fmt.Printf("frameSize = sourceFrameSize\n")
-		fmt.Printf("Frame size: ", frameSize)
-		fmt.Printf("Interval: ", interval)
+		fmt.Printf("Frame size: ", frameSize, "\n")
+		fmt.Printf("Interval: ", interval, "\n")
 	}
 
 	ticker := time.NewTicker(interval)

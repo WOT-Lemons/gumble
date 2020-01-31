@@ -2,7 +2,7 @@
 
 ## Sub-projects
 
-- gumble [![GoDoc](https://godoc.org/layeh.com/gumble/gumble?status.svg)](https://godoc.org/layeh.com/gumble/gumble)
+- gumble [![GoDoc](https://godoc.org/github.com/TLMcNulty/gumble/gumble?status.svg)](https://godoc.org/github.com/TLMcNulty/gumble/gumble)
     - Client library
 - gumbleopenal
     - [OpenAL](http://kcat.strangesoft.net/openal.html) audio system for gumble
@@ -16,8 +16,8 @@
     package main
 
     import (
-      "layeh.com/gumble/gumble"
-      "layeh.com/gumble/gumbleutil"
+      "github.com/TLMcNulty/gumble/gumble"
+      "github.com/TLMcNulty/gumble/gumbleutil"
     )
 
     func main() {

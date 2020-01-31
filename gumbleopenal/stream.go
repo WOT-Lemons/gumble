@@ -39,6 +39,8 @@ func New(client *gumble.Client) (*Stream, error) {
 
 	s.link = client.Config.AttachAudio(s)
 
+	fmt.Printf("Created stream object\n")
+
 	return s, nil
 }
 
@@ -58,11 +60,13 @@ func (s *Stream) Destroy() {
 }
 
 func (s *Stream) StartSource() error {
+	fmt.Printf("Starting source...\n")
 	if s.sourceStop != nil {
 		return ErrState
 	}
 	s.deviceSource.CaptureStart()
 	s.sourceStop = make(chan bool)
+	fmt.Printf("Started. Going to source routine...\n")
 	go s.sourceRoutine()
 	return nil
 }
@@ -117,13 +121,17 @@ func (s *Stream) OnAudioStream(e *gumble.AudioStreamEvent) {
 }
 
 func (s *Stream) sourceRoutine() {
+	fmt.Printf("Running source routine...\n")
 	interval := s.client.Config.AudioInterval
 	frameSize := s.client.Config.AudioFrameSize()
 
 	if frameSize != s.sourceFrameSize {
+		fmt.Printf("Frame size mismatch. Restarting Device...\n")
 		s.deviceSource.CaptureCloseDevice()
 		s.sourceFrameSize = frameSize
 		s.deviceSource = openal.CaptureOpenDevice("", gumble.AudioSampleRate, openal.FormatMono16, uint32(s.sourceFrameSize))
+	} else {
+		fmt.Printf("frameSize = sourceFrameSize\n")
 	}
 
 	ticker := time.NewTicker(interval)
@@ -134,6 +142,7 @@ func (s *Stream) sourceRoutine() {
 	outgoing := s.client.AudioOutgoing()
 	defer close(outgoing)
 
+	fmt.Printf("Starting ticker...\n")
 	for {
 		select {
 		case <-stop:

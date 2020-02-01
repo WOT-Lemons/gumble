@@ -4,8 +4,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"time"
-	"fmt"
-	"strconv"
 
 	"github.com/TLMcNulty/gumble/gumble"
 	"github.com/timshannon/go-openal/openal"
@@ -30,7 +28,8 @@ type Stream struct {
 func New(client *gumble.Client) (*Stream, error) {
 	s := &Stream{
 		client:          client,
-		sourceFrameSize: client.Config.AudioFrameSize(),
+		sourceFrameSize: 80,
+		//sourceFrameSize: client.Config.AudioFrameSize(),
 	}
 
 	s.deviceSource = openal.CaptureOpenDevice("", gumble.AudioSampleRate, openal.FormatMono16, uint32(s.sourceFrameSize))
@@ -41,7 +40,9 @@ func New(client *gumble.Client) (*Stream, error) {
 
 	s.link = client.Config.AttachAudio(s)
 
-	fmt.Printf("Created stream object\n")
+	//fmt.Printf("Created stream object\n")
+	//fmt.Printf("deviceSource %+v\n", s.deviceSource)
+	//fmt.Printf("deviceSink %+v\n", s.deviceSink)
 
 	return s, nil
 }
@@ -62,13 +63,13 @@ func (s *Stream) Destroy() {
 }
 
 func (s *Stream) StartSource() error {
-	fmt.Printf("Starting source...\n")
+	//fmt.Printf("Starting source...\n")
 	if s.sourceStop != nil {
 		return ErrState
 	}
 	s.deviceSource.CaptureStart()
 	s.sourceStop = make(chan bool)
-	fmt.Printf("Started. Going to source routine...\n")
+	//fmt.Printf("Started. Going to source routine...\n")
 	go s.sourceRoutine()
 	return nil
 }
@@ -123,19 +124,19 @@ func (s *Stream) OnAudioStream(e *gumble.AudioStreamEvent) {
 }
 
 func (s *Stream) sourceRoutine() {
-	fmt.Printf("Running source routine...\n")
+	//fmt.Printf("Running source routine...\n")
 	interval := s.client.Config.AudioInterval
 	frameSize := s.client.Config.AudioFrameSize()
 
 	if frameSize != s.sourceFrameSize {
-		fmt.Printf("Frame size mismatch. Restarting Device...\n")
+		//fmt.Printf("Frame size mismatch. Restarting Device...\n")
 		s.deviceSource.CaptureCloseDevice()
 		s.sourceFrameSize = frameSize
 		s.deviceSource = openal.CaptureOpenDevice("", gumble.AudioSampleRate, openal.FormatMono16, uint32(s.sourceFrameSize))
 	} else {
-		fmt.Printf("frameSize = sourceFrameSize\n")
-		fmt.Printf("Frame size: ", frameSize, "\n")
-		fmt.Printf("Interval: ", interval, "\n")
+		//fmt.Printf("frameSize = sourceFrameSize\n")
+		//fmt.Printf("Frame size: ", frameSize, "\n")
+		//fmt.Printf("Interval: ", interval, "\n")
 	}
 
 	ticker := time.NewTicker(interval)
@@ -146,23 +147,21 @@ func (s *Stream) sourceRoutine() {
 	outgoing := s.client.AudioOutgoing()
 	defer close(outgoing)
 
-	fmt.Printf("Starting ticker...\n")
+	//fmt.Printf("Starting ticker...\n")
 	for {
 		select {
 		case <-stop:
 			return
 		case <-ticker.C:
+			//fmt.Printf("-")
 			buff := s.deviceSource.CaptureSamples(uint32(frameSize))
 			if len(buff) != frameSize*2 {
-				fmt.Printf("buffer is not double the framesize")
 				continue
 			}
 			int16Buffer := make([]int16, frameSize)
 			for i := range int16Buffer {
 				int16Buffer[i] = int16(binary.LittleEndian.Uint16(buff[i*2 : (i+1)*2]))
 			}
-			s := strconv.Itoa(int16Buffer)
-			fmt.Printf(s)
 			outgoing <- gumble.AudioBuffer(int16Buffer)
 		}
 	}

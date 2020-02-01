@@ -176,6 +176,7 @@ func (c *Client) State() State {
 // a single channel should be open at any given time (i.e. close the channel
 // before opening another).
 func (c *Client) AudioOutgoing() chan<- AudioBuffer {
+	//fmt.Printf("Creating a channel for AudioBuffer...")
 	ch := make(chan AudioBuffer)
 	go func() {
 		var seq int64

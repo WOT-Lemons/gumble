@@ -2,6 +2,7 @@ package gumble
 
 import (
 	"time"
+	"fmt"
 )
 
 const (
@@ -23,7 +24,7 @@ const (
 
 	// AudioDefaultDataBytes is the default number of bytes that an audio frame
 	// can use.
-	AudioDefaultDataBytes = 40
+	AudioDefaultDataBytes = 60
 
 	// AudioChannels is the number of audio channels that are contained in an
 	// audio stream.
@@ -51,8 +52,10 @@ type AudioStreamEvent struct {
 type AudioBuffer []int16
 
 func (a AudioBuffer) writeAudio(client *Client, seq int64, final bool) error {
+	//fmt.Printf("+")
 	encoder := client.AudioEncoder
 	if encoder == nil {
+		fmt.Printf("Encode == nil\n")
 		return nil
 	}
 	dataBytes := client.Config.AudioDataBytes

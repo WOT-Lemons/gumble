@@ -1,7 +1,7 @@
-package gumbleutil // import "github.com/TLMcNulty/gumble/gumbleutil"
+package gumbleutil // import "github.com/WOT-Lemons/gumble/gumbleutil"
 
 import (
-	"github.com/TLMcNulty/gumble/gumble"
+	"github.com/WOT-Lemons/gumble/gumble"
 )
 
 // ListenerFunc is a single listener function that implements the

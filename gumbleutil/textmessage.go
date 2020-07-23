@@ -1,11 +1,11 @@
-package gumbleutil // import "github.com/TLMcNulty/gumble/gumbleutil"
+package gumbleutil // import "github.com/WOT-Lemons/gumble/gumbleutil"
 
 import (
 	"bytes"
 	"encoding/xml"
 	"strings"
 
-	"github.com/TLMcNulty/gumble/gumble"
+	"github.com/WOT-Lemons/gumble/gumble"
 )
 
 // PlainText returns the Message string without HTML tags or entities.

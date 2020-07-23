@@ -1,11 +1,11 @@
-package gumbleopenal // import "github.com/TLMcNulty/gumble/gumbleopenal"
+package gumbleopenal // import "github.com/WOT-Lemons/gumble/gumbleopenal"
 
 import (
 	"encoding/binary"
 	"errors"
 	"time"
 
-	"github.com/TLMcNulty/gumble/gumble"
+	"github.com/WOT-Lemons/gumble/gumble"
 	"github.com/timshannon/go-openal/openal"
 )
 
